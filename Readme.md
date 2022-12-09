@@ -84,7 +84,7 @@ g++ -o Hello.cpp // 产物是a.out
 
  所以汇编产生的文件和链接产生的文件到底有什么差别？
 
-![image-20221209005748266](/Users/yxy/workspace/Compiler/img/image-20221209005748266.png)
+![image-20221209005748266](./img/image-20221209005748266.png)
 
 ```c++
 objdump -x binaryFile | grep NEEDED // 在大多数linux发行版本中自带的工具
@@ -101,7 +101,7 @@ objdump -x binaryFile | grep NEEDED // 在大多数linux发行版本中自带的
  g++ testshare -lpingping -L./libs/ -I./libs/public  // successfuly
 ```
 
-![image-20221209014915556](/Users/yxy/workspace/Compiler/img/image-20221209014915556.png)
+![image-20221209014915556](./img/image-20221209014915556.png)
 
 ```bash
 运行时依赖 请添加LD_LIBRARY_PATH变量
