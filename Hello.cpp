@@ -6,7 +6,7 @@ int main() {
 #ifdef YXY_BUILD
     cout << "hello yuanxinying" << endl;
 #else
-    cout << "hello xiatian" << endl;
+    cout << "hello others" << endl;
 #endif
     int* addr = (int*)malloc(sizeof(int));
     *addr = 10;
