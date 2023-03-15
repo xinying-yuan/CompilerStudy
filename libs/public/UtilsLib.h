@@ -1,11 +1,11 @@
-#ifndef PINGPING_LIB_H
-#define PINGPING_LIB_H
+#ifndef Utils_LIB_H
+#define Utils_LIB_H
 typedef enum _FoodType {
     EXPENSIVE_FOOD,
     CHEAP_FOOD,
 } FoodType;
 
-class PingPing {
+class Utils {
     public:
         FoodType getFoods(int money);
 };

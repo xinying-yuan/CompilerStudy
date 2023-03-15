@@ -1,10 +1,10 @@
-# 1 "Hello.cpp"
+# 1 "hello.cpp"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 414 "<built-in>" 3
 # 1 "<command line>" 1
 # 1 "<built-in>" 2
-# 1 "Hello.cpp" 2
+# 1 "hello.cpp" 2
 # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iostream" 1 3
 # 36 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iostream" 3
 # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__config" 1 3
@@ -29562,12 +29562,40 @@ public:
         {return bool(__r_.first().__s.__size_ & __short_mask);}
 # 1470 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
 private:
+                      __attribute__ ((__visibility__("hidden"))) __attribute__ ((internal_linkage)) static bool __fits_in_sso(size_type __sz) {
+
+        return !__libcpp_is_constant_evaluated() && (__sz < __min_cap);
+    }
+
+    template <class _ForwardIterator>
     __attribute__ ((__visibility__("hidden"))) __attribute__ ((internal_linkage))
-    allocator_type& __alloc() throw()
-        {return __r_.second();}
-    __attribute__ ((__visibility__("hidden"))) __attribute__ ((internal_linkage))
-    const allocator_type& __alloc() const throw()
-        {return __r_.second();}
+    iterator __insert_from_safe_copy(size_type __n, size_type __ip, _ForwardIterator __first, _ForwardIterator __last) {
+        size_type __sz = size();
+        size_type __cap = capacity();
+        value_type* __p;
+        if (__cap - __sz >= __n)
+        {
+            __p = std::__to_address(__get_pointer());
+            size_type __n_move = __sz - __ip;
+            if (__n_move != 0)
+                traits_type::move(__p + __ip + __n, __p + __ip, __n_move);
+        }
+        else
+        {
+            __grow_by(__cap, __sz + __n - __cap, __sz, __ip, 0, __n);
+            __p = std::__to_address(__get_long_pointer());
+        }
+        __sz += __n;
+        __set_size(__sz);
+        traits_type::assign(__p[__sz], value_type());
+        for (__p += __ip; __first != __last; ++__p, ++__first)
+            traits_type::assign(*__p, *__first);
+
+        return begin() + __ip;
+    }
+
+    __attribute__ ((__visibility__("hidden"))) __attribute__ ((internal_linkage)) allocator_type& __alloc() throw() { return __r_.second(); }
+    __attribute__ ((__visibility__("hidden"))) __attribute__ ((internal_linkage)) const allocator_type& __alloc() const throw() { return __r_.second(); }
 
 
 
@@ -29585,7 +29613,7 @@ private:
 
 
         {return __r_.first().__s.__size_;}
-# 1516 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
+# 1544 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
     __attribute__ ((__visibility__("hidden"))) __attribute__ ((internal_linkage))
     void __set_long_size(size_type __s) throw()
         {__r_.first().__l.__size_ = __s;}
@@ -29654,7 +29682,7 @@ private:
     void __init(const value_type* __s, size_type __sz);
     inline
     void __init(size_type __n, value_type __c);
-# 1593 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
+# 1621 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
     void __init_copy_ctor_external(const value_type* __s, size_type __sz);
 
     template <class _InputIterator>
@@ -29725,7 +29753,7 @@ private:
     __attribute__ ((__visibility__("hidden"))) __attribute__ ((internal_linkage))
     void __copy_assign_alloc(const basic_string&, false_type) throw()
         {}
-# 1677 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
+# 1705 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
     __attribute__ ((__visibility__("hidden"))) __attribute__ ((internal_linkage))
     void
     __move_assign_alloc(basic_string& __str)
@@ -29794,11 +29822,11 @@ private:
     friend basic_string operator+<>(const basic_string&, const value_type*);
     friend basic_string operator+<>(const basic_string&, value_type);
 };
-# 1754 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
+# 1782 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
     extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::replace(size_type, size_type, value_type const*, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>::size_type basic_string<char>::rfind(value_type const*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) void basic_string<char>::__init(value_type const*, size_type, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>::basic_string(basic_string const&); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::replace(size_type, size_type, value_type const*); extern template __attribute__ ((__visibility__("default"))) basic_string<char>::basic_string(basic_string const&, allocator<char> const&); extern template __attribute__ ((__visibility__("default"))) basic_string<char>::size_type basic_string<char>::find_last_not_of(value_type const*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) basic_string<char>::~basic_string(); extern template __attribute__ ((__visibility__("default"))) basic_string<char>::size_type basic_string<char>::find_first_not_of(value_type const*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::insert(size_type, size_type, value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::operator=(value_type); extern template __attribute__ ((__visibility__("default"))) void basic_string<char>::__init(value_type const*, size_type); extern template __attribute__ ((__visibility__("default"))) const char& basic_string<char>::at(size_type) const; extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::insert(size_type, value_type const*, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>::size_type basic_string<char>::find_first_of(value_type const*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::replace(size_type, size_type, size_type, value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::assign(value_type const*, size_type); extern template __attribute__ ((__visibility__("default"))) void basic_string<char>::reserve(size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::append(value_type const*, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::assign(basic_string const&, size_type, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>::size_type basic_string<char>::copy(value_type*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) basic_string<char>::basic_string(basic_string const&, size_type, size_type, allocator<char> const&); extern template __attribute__ ((__visibility__("default"))) basic_string<char>::size_type basic_string<char>::find(value_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) void basic_string<char>::__init(size_type, value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::insert(size_type, value_type const*); extern template __attribute__ ((__visibility__("default"))) basic_string<char>::size_type basic_string<char>::find_last_of(value_type const*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) void basic_string<char>::__grow_by(size_type, size_type, size_type, size_type, size_type, size_type); extern template __attribute__ ((__visibility__("default"))) void basic_string<char>::__grow_by_and_replace(size_type, size_type, size_type, size_type, size_type, size_type, value_type const*); extern template __attribute__ ((__visibility__("default"))) void basic_string<char>::push_back(value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::append(size_type, value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>::size_type basic_string<char>::rfind(value_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) const basic_string<char>::size_type basic_string<char>::npos; extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::assign(size_type, value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::erase(size_type, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::append(basic_string const&, size_type, size_type); extern template __attribute__ ((__visibility__("default"))) int basic_string<char>::compare(value_type const*) const; extern template __attribute__ ((__visibility__("default"))) int basic_string<char>::compare(size_type, size_type, value_type const*) const; extern template __attribute__ ((__visibility__("default"))) char& basic_string<char>::at(size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::assign(value_type const*); extern template __attribute__ ((__visibility__("default"))) basic_string<char>::size_type basic_string<char>::find(value_type const*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) int basic_string<char>::compare(size_type, size_type, basic_string const&, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) int basic_string<char>::compare(size_type, size_type, value_type const*, size_type) const; extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::operator=(basic_string const&); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::append(value_type const*); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::replace(size_type, size_type, basic_string const&, size_type, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>::iterator basic_string<char>::insert(basic_string::const_iterator, value_type); extern template __attribute__ ((__visibility__("default"))) void basic_string<char>::resize(size_type, value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<char>& basic_string<char>::insert(size_type, basic_string const&, size_type, size_type);
 
         extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::replace(size_type, size_type, value_type const*, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::size_type basic_string<wchar_t>::rfind(value_type const*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) void basic_string<wchar_t>::__init(value_type const*, size_type, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::basic_string(basic_string const&); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::replace(size_type, size_type, value_type const*); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::basic_string(basic_string const&, allocator<wchar_t> const&); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::size_type basic_string<wchar_t>::find_last_not_of(value_type const*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::~basic_string(); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::size_type basic_string<wchar_t>::find_first_not_of(value_type const*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::insert(size_type, size_type, value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::operator=(value_type); extern template __attribute__ ((__visibility__("default"))) void basic_string<wchar_t>::__init(value_type const*, size_type); extern template __attribute__ ((__visibility__("default"))) const wchar_t& basic_string<wchar_t>::at(size_type) const; extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::insert(size_type, value_type const*, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::size_type basic_string<wchar_t>::find_first_of(value_type const*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::replace(size_type, size_type, size_type, value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::assign(value_type const*, size_type); extern template __attribute__ ((__visibility__("default"))) void basic_string<wchar_t>::reserve(size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::append(value_type const*, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::assign(basic_string const&, size_type, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::size_type basic_string<wchar_t>::copy(value_type*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::basic_string(basic_string const&, size_type, size_type, allocator<wchar_t> const&); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::size_type basic_string<wchar_t>::find(value_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) void basic_string<wchar_t>::__init(size_type, value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::insert(size_type, value_type const*); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::size_type basic_string<wchar_t>::find_last_of(value_type const*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) void basic_string<wchar_t>::__grow_by(size_type, size_type, size_type, size_type, size_type, size_type); extern template __attribute__ ((__visibility__("default"))) void basic_string<wchar_t>::__grow_by_and_replace(size_type, size_type, size_type, size_type, size_type, size_type, value_type const*); extern template __attribute__ ((__visibility__("default"))) void basic_string<wchar_t>::push_back(value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::append(size_type, value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::size_type basic_string<wchar_t>::rfind(value_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) const basic_string<wchar_t>::size_type basic_string<wchar_t>::npos; extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::assign(size_type, value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::erase(size_type, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::append(basic_string const&, size_type, size_type); extern template __attribute__ ((__visibility__("default"))) int basic_string<wchar_t>::compare(value_type const*) const; extern template __attribute__ ((__visibility__("default"))) int basic_string<wchar_t>::compare(size_type, size_type, value_type const*) const; extern template __attribute__ ((__visibility__("default"))) wchar_t& basic_string<wchar_t>::at(size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::assign(value_type const*); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::size_type basic_string<wchar_t>::find(value_type const*, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) int basic_string<wchar_t>::compare(size_type, size_type, basic_string const&, size_type, size_type) const; extern template __attribute__ ((__visibility__("default"))) int basic_string<wchar_t>::compare(size_type, size_type, value_type const*, size_type) const; extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::operator=(basic_string const&); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::append(value_type const*); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::replace(size_type, size_type, basic_string const&, size_type, size_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>::iterator basic_string<wchar_t>::insert(basic_string::const_iterator, value_type); extern template __attribute__ ((__visibility__("default"))) void basic_string<wchar_t>::resize(size_type, value_type); extern template __attribute__ ((__visibility__("default"))) basic_string<wchar_t>& basic_string<wchar_t>::insert(size_type, basic_string const&, size_type, size_type);
-# 1789 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
+# 1817 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
 template <class _CharT, class _Traits, class _Allocator>
 inline
 void
@@ -29814,7 +29842,7 @@ inline
 void
 basic_string<_CharT, _Traits, _Allocator>::__invalidate_iterators_past(size_type __pos)
 {
-# 1823 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
+# 1851 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
     (void)__pos;
 
 }
@@ -29980,7 +30008,7 @@ void basic_string<_CharT, _Traits, _Allocator>::__init_copy_ctor_external(
   }
   traits_type::copy(std::__1::__to_address(__p), __s, __sz + 1);
 }
-# 2030 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
+# 2058 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
 template <class _CharT, class _Traits, class _Allocator>
 void
 basic_string<_CharT, _Traits, _Allocator>::__init(size_type __n, value_type __c)
@@ -30189,7 +30217,7 @@ basic_string<_CharT, _Traits, _Allocator>::basic_string(_InputIterator __first, 
 
 
 }
-# 2268 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
+# 2296 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
 template <class _CharT, class _Traits, class _Allocator>
 basic_string<_CharT, _Traits, _Allocator>::~basic_string()
 {
@@ -30367,7 +30395,7 @@ basic_string<_CharT, _Traits, _Allocator>::operator=(const basic_string& __str)
   }
   return *this;
 }
-# 2499 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
+# 2527 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
 template <class _CharT, class _Traits, class _Allocator>
 template<class _InputIterator>
 _EnableIf
@@ -30730,46 +30758,23 @@ _EnableIf
 >
 basic_string<_CharT, _Traits, _Allocator>::insert(const_iterator __pos, _ForwardIterator __first, _ForwardIterator __last)
 {
-
-
-
+    ((void)0);
 
 
     size_type __ip = static_cast<size_type>(__pos - begin());
-    size_type __n = static_cast<size_type>(std::__1::distance(__first, __last));
-    if (__n)
+    size_type __n = static_cast<size_type>(std::distance(__first, __last));
+    if (__n == 0)
+        return begin() + __ip;
+
+    if (__string_is_trivial_iterator<_ForwardIterator>::value && !__addr_in_range(*__first))
     {
-        if (__string_is_trivial_iterator<_ForwardIterator>::value &&
-            !__addr_in_range(*__first))
-        {
-            size_type __sz = size();
-            size_type __cap = capacity();
-            value_type* __p;
-            if (__cap - __sz >= __n)
-            {
-                __p = std::__1::__to_address(__get_pointer());
-                size_type __n_move = __sz - __ip;
-                if (__n_move != 0)
-                    traits_type::move(__p + __ip + __n, __p + __ip, __n_move);
-            }
-            else
-            {
-                __grow_by(__cap, __sz + __n - __cap, __sz, __ip, 0, __n);
-                __p = std::__1::__to_address(__get_long_pointer());
-            }
-            __sz += __n;
-            __set_size(__sz);
-            traits_type::assign(__p[__sz], value_type());
-            for (__p += __ip; __first != __last; ++__p, ++__first)
-                traits_type::assign(*__p, *__first);
-        }
-        else
-        {
-            const basic_string __temp(__first, __last, __alloc());
-            return insert(__pos, __temp.data(), __temp.data() + __temp.size());
-        }
+        return __insert_from_safe_copy(__n, __ip, __first, __last);
     }
-    return begin() + __ip;
+    else
+    {
+        const basic_string __temp(__first, __last, __alloc());
+        return __insert_from_safe_copy(__n, __ip, __temp.begin(), __temp.end());
+    }
 }
 
 template <class _CharT, class _Traits, class _Allocator>
@@ -32195,7 +32200,7 @@ operator+(const basic_string<_CharT, _Traits, _Allocator>& __lhs, _CharT __rhs)
     __r.push_back(__rhs);
     return __r;
 }
-# 4391 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
+# 4396 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
 template<class _CharT, class _Traits, class _Allocator>
 inline __attribute__ ((__visibility__("hidden"))) __attribute__ ((internal_linkage))
 void
@@ -32297,7 +32302,7 @@ inline __attribute__ ((__visibility__("hidden"))) __attribute__ ((internal_linka
 basic_istream<_CharT, _Traits>&
 getline(basic_istream<_CharT, _Traits>&& __is,
         basic_string<_CharT, _Traits, _Allocator>& __str);
-# 4594 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
+# 4599 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string" 3
 } }
 # 16 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__locale" 2 3
 # 1 "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/memory" 1 3
@@ -45834,14 +45839,18 @@ extern __attribute__ ((__visibility__("default"))) wostream wclog;
 
 
 } }
-# 2 "Hello.cpp" 2
+# 2 "hello.cpp" 2
+
 using namespace std;
 
 int main() {
 
 
 
-    cout << "hello xiatian" << endl;
+    cout << "hello others" << endl;
 
+    int* addr = (int*)malloc(sizeof(int));
+    *addr = 10;
+    delete addr;
     return 0;
 }

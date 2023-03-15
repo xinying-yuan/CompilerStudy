@@ -1,9 +1,9 @@
 #include <iostream>
-#include "PingPingLib.h"
+#include "UtilsLib.h"
 using namespace std;
 
 int main() {
-    PingPing* ping = new PingPing();
+    Utils* ping = new Utils();
     ping -> getFoods(50);
     ping -> getFoods(1000);
     return 0;
