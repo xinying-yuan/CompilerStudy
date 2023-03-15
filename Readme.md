@@ -28,7 +28,7 @@ int main() {
 g++ -E hello.cpp >& hello.i // 预处理命令
 ```
 
-![image-20221208233814933](/Users/yxy/workspace/Compiler/img/Snipaste_2023-03-15_23-26-15.png)
+![image-20221208233814933](./img/Snipaste_2023-03-15_23-26-15.png)
 
 那么假如我们稍微换一条命令
 
